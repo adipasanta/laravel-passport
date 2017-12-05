@@ -2,11 +2,12 @@
 
 namespace App;
 
-use Laravel\Passport\HasApiTokens;
+use App\Notifications\AdminResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
@@ -28,8 +29,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function messages()
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
     {
-        return $this->belongsToMany(Message::class);
+        $this->notify(new AdminResetPassword($token));
     }
 }

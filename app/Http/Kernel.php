@@ -41,7 +41,12 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            'custom-provider',
         ],
+        'custom-provider' => [
+            \SMartins\PassportMultiauth\Http\Middleware\AddCustomProvider::class,
+            \SMartins\PassportMultiauth\Http\Middleware\ConfigAccessTokenCustomProvider::class,
+        ]
     ];
 
     /**
@@ -52,6 +57,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
+        'admin.guest' => \App\Http\Middleware\RedirectIfAdmin::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

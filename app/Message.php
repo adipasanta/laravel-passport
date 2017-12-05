@@ -1,0 +1,30 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Message extends Model
+{
+    use SoftDeletes;
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+    
+    protected $fillable = [
+    	'subject',
+    	'content',
+    	'parent_id',
+    	'is_read',
+    ];
+
+    public function users()
+    {
+    	return $this->belongsToMany(User::class);
+    }
+}

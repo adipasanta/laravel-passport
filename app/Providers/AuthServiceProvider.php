@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Route;
 use Laravel\Passport\Passport;
 // use App\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
@@ -30,6 +31,11 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'portal' => 'Portal Users',
         ]);
+        Route::group(['middleware' => 'api'], function () {
+            Passport::routes(function ($router) {
+                return $router->forAccessTokens();
+            });
+        });
         // Passport::enableImplicitGrant();
         //
     }
